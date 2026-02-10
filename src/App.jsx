@@ -10,12 +10,14 @@ import "./App.css";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
 
+const BASE = import.meta.env.BASE_URL;
+
 const sections = [
   {
     id: "iris",
     title: "Synamedia Iris",
     subtitle: "Audio synced, smooth, and fully automated.",
-    audio: "/assets/intro.wav",
+    audio: `${BASE}assets/intro.wav`,
     microType: "orbit",
     subsections: [
       { title: "Advanced video ad monetisation platform", desc: "Add supporting copy for this chapter of the script." },
@@ -28,7 +30,7 @@ const sections = [
     id: "value",
     title: "VALUE PROPOSITION",
     subtitle: "Micro animations loop only when active.",
-    audio: "/assets/value-proposition.wav",
+    audio: `${BASE}assets/value-proposition.wav`,
     microType: "pulse",
     subsections: [
       { title: "Sub-section 1", desc: "Add interaction notes here." },
@@ -41,7 +43,7 @@ const sections = [
     id: "addressability",
     title: "FULL ADDRESSABILITY",
     subtitle: "Sections blend with gentle transitions.",
-    audio: "/assets/full-addressability.wav",
+    audio: `${BASE}assets/full-addressability.wav`,
     microType: "beam",
     subsections: [
       { title: "Sub-section 1", desc: "Add interaction notes here." },
@@ -54,7 +56,7 @@ const sections = [
     id: "platform",
     title: "AGNOSTIC PLATFORM",
     subtitle: "Video only plays when active.",
-    audio: "/assets/agnostic-platform.wav",
+    audio: `${BASE}assets/agnostic-platform.wav`,
     microType: "ripple",
     video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     subsections: [
@@ -67,7 +69,7 @@ const sections = [
     id: "campaign",
     title: "STREAMLINED CAMPAIGN MANAGEMENT",
     subtitle: "Everything stays synced with the voice-over.",
-    audio: "/assets/scm.wav",
+    audio: `${BASE}assets/scm.wav`,
     microType: "spin",
     subsections: [
       { title: "Sub-section 1", desc: "Add interaction notes here." },
@@ -79,7 +81,7 @@ const sections = [
     id: "optimization",
     title: "YIELD OPTIMIZATION",
     subtitle: "Everything stays synced with the voice-over.",
-    audio: "/assets/yield-optimization.wav",
+    audio: `${BASE}assets/yield-optimization.wav`,
     microType: "spin",
     subsections: [
       { title: "Sub-section 1", desc: "Add interaction notes here." },
@@ -91,7 +93,7 @@ const sections = [
     id: "forecasting",
     title: "AUDIENCE INTELLIGENCE & FORECASTING",
     subtitle: "Everything stays synced with the voice-over.",
-    audio: "/assets/audience-intelligence-forecasting.wav",
+    audio: `${BASE}assets/audience-intelligence-forecasting.wav`,
     subsections: [
       { title: "Sub-section 1", desc: "Add interaction notes here." },
       { title: "Sub-section 2", desc: "Add interaction notes here." },
