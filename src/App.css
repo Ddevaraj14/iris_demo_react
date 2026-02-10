@@ -94,10 +94,12 @@ body {
 .panel__inner h1,
 .panel__inner h2 {
   font-size: clamp(2.6rem, 5vw, 4.5rem);
+  will-change: transform, opacity;
 }
 
 .panel__inner p {
   font-size: 1.1rem;
+  will-change: transform, opacity;
   color: var(--muted);
 }
 
@@ -240,4 +242,53 @@ body {
   .panel__inner h2 {
     font-size: clamp(2.2rem, 7vw, 3rem);
   }
+}
+
+/* Intro Screen */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, #1d2640, #0a0f1f 70%);
+  z-index: 100;
+  cursor: pointer;
+}
+
+.intro-screen__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.intro-screen__lottie {
+  width: 800px;
+  height: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-screen__lottie canvas,
+.intro-screen__lottie svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.intro-screen__loading {
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.intro-screen__skip {
+  font-size: 0.9rem;
+  color: var(--muted);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.intro-screen:hover .intro-screen__skip {
+  opacity: 1;
 }

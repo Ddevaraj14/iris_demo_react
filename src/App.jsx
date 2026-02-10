@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import Navigation from "./components/Navigation";
 import Panel from "./components/Panel";
 import AutoplayGate from "./components/AutoplayGate";
+import IntroScreen from "./components/IntroScreen";
 import "./App.css";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
@@ -93,7 +94,7 @@ const sections = [
     id: "forecasting",
     title: "AUDIENCE INTELLIGENCE & FORECASTING",
     subtitle: "Everything stays synced with the voice-over.",
-    audio: `${BASE}assets/audience-intelligence-forecasting.wav`,
+    audio: `${BASE}assets/aif.wav`,
     subsections: [
       { title: "Sub-section 1", desc: "Add interaction notes here." },
       { title: "Sub-section 2", desc: "Add interaction notes here." },
@@ -117,6 +118,7 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showGate, setShowGate] = useState(false);
   const [audioDurations, setAudioDurations] = useState({});
+  const [showIntro, setShowIntro] = useState(true);
 
   const hasSectionAudio = useCallback(
     (index) => Boolean(sections[index]?.audio),
@@ -277,9 +279,9 @@ export default function App() {
         scrub: 0.5,
         snap: {
           snapTo: 1 / (panels.length - 1),
-          duration: { min: 0.3, max: 0.6 },
-          delay: 0.05,
-          ease: "power2.inOut",
+          duration: { min: 0.6, max: 1.2 },
+          delay: 0.08,
+          ease: "power2.easeInOut",
         },
         onSnapComplete: (self) => {
           if (!isScrollingRef.current) {
@@ -337,6 +339,9 @@ export default function App() {
   );
 
   useEffect(() => {
+    // Don't auto-start if intro is showing
+    if (showIntro) return;
+    
     const firstAudio = audioRefs.current[0];
     if (!firstAudio) return;
     const handleLoaded = () => {
@@ -349,10 +354,16 @@ export default function App() {
       firstAudio.addEventListener("loadedmetadata", handleLoaded);
       return () => firstAudio.removeEventListener("loadedmetadata", handleLoaded);
     }
-  }, [play]);
+  }, [play, showIntro]);
+
+  const handleIntroComplete = useCallback(() => {
+    setShowIntro(false);
+  }, []);
 
   return (
     <>
+      {showIntro && <IntroScreen onComplete={handleIntroComplete} />}
+      
       <Navigation
         sections={sections}
         activeIndex={activeIndex}

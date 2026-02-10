@@ -18,6 +18,45 @@ const Panel = forwardRef(function Panel(
 ) {
   const subsectionRefs = useRef([]);
   const activeSubRef = useRef(0);
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const hasAnimatedRef = useRef(false);
+
+  // Text fly-in animation when panel becomes active
+  useEffect(() => {
+    if (!isActive || hasAnimatedRef.current) return;
+    
+    hasAnimatedRef.current = true;
+    const tl = gsap.timeline();
+    
+    // Animate title - fly in from left
+    if (titleRef.current) {
+      tl.fromTo(
+        titleRef.current,
+        { x: -100, opacity: 0, scale: 0.9 },
+        { x: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }
+      );
+    }
+    
+    // Animate subtitle - fly in from right with delay
+    if (subtitleRef.current) {
+      tl.fromTo(
+        subtitleRef.current,
+        { x: 100, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
+        "-=0.4" // overlap with title animation
+      );
+    }
+    
+    return () => tl.kill();
+  }, [isActive]);
+
+  // Reset animation state when leaving the panel
+  useEffect(() => {
+    if (!isActive) {
+      hasAnimatedRef.current = false;
+    }
+  }, [isActive]);
 
   useGSAP(
     () => {
@@ -59,8 +98,12 @@ const Panel = forwardRef(function Panel(
       data-index={index}
     >
       <div className="panel__inner">
-        {index === 0 ? <h1>{section.title}</h1> : <h2>{section.title}</h2>}
-        <p>{section.subtitle}</p>
+        {index === 0 ? (
+          <h1 ref={titleRef}>{section.title}</h1>
+        ) : (
+          <h2 ref={titleRef}>{section.title}</h2>
+        )}
+        <p ref={subtitleRef}>{section.subtitle}</p>
 
         {section.audio && (
           <audio
