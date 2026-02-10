@@ -1,0 +1,243 @@
+:root {
+  --bg-1: #0b1020;
+  --bg-2: #18223a;
+  --bg-3: #2a344f;
+  --bg-4: #1c2b3d;
+  --bg-5: #11141f;
+  --accent: #f5c542;
+  --text: #f7f1e7;
+  --muted: #b3b3b3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  font-family: "Space Grotesk", "Montserrat", "Helvetica Neue", sans-serif;
+  background: radial-gradient(circle at 20% 20%, #1d2640, #0a0f1f 60%);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: rgba(6, 8, 16, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn,
+.select {
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn:hover,
+.select:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+#scroller {
+  position: relative;
+}
+
+.panel {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 8vw 80px;
+}
+
+.panel__inner {
+  max-width: 720px;
+  text-align: center;
+  display: grid;
+  gap: 18px;
+  will-change: transform, opacity;
+}
+
+.panel__inner h1,
+.panel__inner h2 {
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+}
+
+.panel__inner p {
+  font-size: 1.1rem;
+  color: var(--muted);
+}
+
+.panel--iris {
+  background: linear-gradient(140deg, var(--bg-1), #111827);
+}
+
+.panel--value {
+  background: linear-gradient(140deg, var(--bg-2), #0c192b);
+}
+
+.panel--addressability {
+  background: linear-gradient(140deg, var(--bg-3), #12172b);
+}
+
+.panel--platform {
+  background: linear-gradient(140deg, var(--bg-4), #0b1522);
+}
+
+.panel--campaign {
+  background: linear-gradient(140deg, var(--bg-5), #0a0d16);
+}
+
+.panel__video {
+  width: min(720px, 80vw);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+}
+
+.subsections {
+  display: grid;
+  gap: 14px;
+  margin: 12px auto 8px;
+  max-width: 640px;
+}
+
+.subsection {
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: left;
+}
+
+.subsection h3 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.subsection p {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.subsections--animated .subsection {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.micro {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+}
+
+.micro--orbit span {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.micro--pulse span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(245, 197, 66, 0.5);
+}
+
+.micro--beam {
+  width: 220px;
+  height: 12px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  border-radius: 999px;
+  margin: 0 auto;
+}
+
+.micro--ripple {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 2px solid rgba(245, 197, 66, 0.45);
+  margin: 0 auto;
+}
+
+.micro--spin span {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 50%;
+  left: 50%;
+}
+
+.autoplay-gate {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 10, 20, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+}
+
+.autoplay-gate__card {
+  display: grid;
+  gap: 12px;
+  padding: 24px 28px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-align: center;
+  max-width: 340px;
+}
+
+@media (max-width: 720px) {
+  .controls {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .panel__inner h1,
+  .panel__inner h2 {
+    font-size: clamp(2.2rem, 7vw, 3rem);
+  }
+}
