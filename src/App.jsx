@@ -21,9 +21,9 @@ const sections = [
     audio: `${BASE}assets/intro.wav`,
     microType: "orbit",
     subsections: [
-      { title: "Advanced video ad monetisation platform", desc: "Add supporting copy for this chapter of the script." },
-      { title: "Trusted by leading media companies", desc: "Add supporting copy for this chapter of the script." },
-      { title: "Campaign premium", desc: "Add supporting copy for this chapter of the script." },
+      { id: "iris-1", title: "Advanced video ad monetisation platform", desc: "Add supporting copy for this chapter of the script." },
+      { id: "iris-2", title: "Trusted by leading media companies", desc: "Add supporting copy for this chapter of the script." },
+      { id: "iris-3", title: "Campaign premium", desc: "Add supporting copy for this chapter of the script." },
     ],
     animatedSubsections: true,
   },
@@ -34,9 +34,9 @@ const sections = [
     audio: `${BASE}assets/value-proposition.wav`,
     microType: "pulse",
     subsections: [
-      { title: "Sub-section 1", desc: "Add interaction notes here." },
-      { title: "Sub-section 2", desc: "Add interaction notes here." },
-      { title: "Sub-section 3", desc: "Add interaction notes here." },
+      { id: "value-1", title: "Sub-section 1", desc: "Add interaction notes here." },
+      { id: "value-2", title: "Sub-section 2", desc: "Add interaction notes here." },
+      { id: "value-3", title: "Sub-section 3", desc: "Add interaction notes here." },
     ],
     animatedSubsections: true,
   },
@@ -47,9 +47,9 @@ const sections = [
     audio: `${BASE}assets/full-addressability.wav`,
     microType: "beam",
     subsections: [
-      { title: "Sub-section 1", desc: "Add interaction notes here." },
-      { title: "Sub-section 2", desc: "Add interaction notes here." },
-      { title: "Sub-section 3", desc: "Add interaction notes here." },
+      { id: "addressability-1", title: "Sub-section 1", desc: "Add interaction notes here." },
+      { id: "addressability-2", title: "Sub-section 2", desc: "Add interaction notes here." },
+      { id: "addressability-3", title: "Sub-section 3", desc: "Add interaction notes here." },
     ],
     animatedSubsections: true,
   },
@@ -61,9 +61,9 @@ const sections = [
     microType: "ripple",
     video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     subsections: [
-      { title: "Sub-section 1", desc: "Add interaction notes here." },
-      { title: "Sub-section 2", desc: "Add interaction notes here." },
-      { title: "Sub-section 3", desc: "Add interaction notes here." },
+      { id: "platform-1", title: "Sub-section 1", desc: "Add interaction notes here." },
+      { id: "platform-2", title: "Sub-section 2", desc: "Add interaction notes here." },
+      { id: "platform-3", title: "Sub-section 3", desc: "Add interaction notes here." },
     ],
   },
   {
@@ -73,9 +73,9 @@ const sections = [
     audio: `${BASE}assets/scm.wav`,
     microType: "spin",
     subsections: [
-      { title: "Sub-section 1", desc: "Add interaction notes here." },
-      { title: "Sub-section 2", desc: "Add interaction notes here." },
-      { title: "Sub-section 3", desc: "Add interaction notes here." },
+      { id: "campaign-1", title: "Sub-section 1", desc: "Add interaction notes here." },
+      { id: "campaign-2", title: "Sub-section 2", desc: "Add interaction notes here." },
+      { id: "campaign-3", title: "Sub-section 3", desc: "Add interaction notes here." },
     ],
   },
     {
@@ -85,9 +85,9 @@ const sections = [
     audio: `${BASE}assets/yield-optimization.wav`,
     microType: "spin",
     subsections: [
-      { title: "Sub-section 1", desc: "Add interaction notes here." },
-      { title: "Sub-section 2", desc: "Add interaction notes here." },
-      { title: "Sub-section 3", desc: "Add interaction notes here." },
+      { id: "optimization-1", title: "Sub-section 1", desc: "Add interaction notes here." },
+      { id: "optimization-2", title: "Sub-section 2", desc: "Add interaction notes here." },
+      { id: "optimization-3", title: "Sub-section 3", desc: "Add interaction notes here." },
     ],
   },
     {
@@ -96,9 +96,9 @@ const sections = [
     subtitle: "Everything stays synced with the voice-over.",
     audio: `${BASE}assets/aif.wav`,
     subsections: [
-      { title: "Sub-section 1", desc: "Add interaction notes here." },
-      { title: "Sub-section 2", desc: "Add interaction notes here." },
-      { title: "Sub-section 3", desc: "Add interaction notes here." },
+      { id: "forecasting-1", title: "Sub-section 1", desc: "Add interaction notes here." },
+      { id: "forecasting-2", title: "Sub-section 2", desc: "Add interaction notes here." },
+      { id: "forecasting-3", title: "Sub-section 3", desc: "Add interaction notes here." },
     ],
   },
 ];
@@ -296,33 +296,46 @@ export default function App() {
         const inner = panel.querySelector(".panel__inner");
         if (!inner) return;
 
-        // Animate panel content on scroll
-        gsap.fromTo(
-          inner,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: panel,
-              start: "top 80%",
-              end: "top 20%",
-              scrub: 1,
-            },
-          }
-        );
+        // Skip first panel - it should be visible initially
+        if (index === 0) {
+          gsap.set(inner, { opacity: 1, y: 0 });
+          return;
+        }
 
-        // Fade out when leaving
-        gsap.to(inner, {
-          opacity: 0,
-          y: -40,
-          scrollTrigger: {
-            trigger: panel,
-            start: "bottom 80%",
-            end: "bottom 20%",
-            scrub: 1,
+        // Animate panel content on scroll - both directions
+        ScrollTrigger.create({
+          trigger: panel,
+          start: "top 80%",
+          end: "top 20%",
+          scrub: 1,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            gsap.set(inner, {
+              opacity: progress,
+              y: 60 * (1 - progress),
+            });
+          },
+        });
+
+        // Handle scroll back from below (when scrolling up past the panel)
+        ScrollTrigger.create({
+          trigger: panel,
+          start: "bottom 80%",
+          end: "bottom 20%",
+          scrub: 1,
+          onUpdate: (self) => {
+            // Only apply fade out when scrolling down past the panel
+            if (self.direction === 1) {
+              const progress = self.progress;
+              gsap.set(inner, {
+                opacity: 1 - progress,
+                y: -40 * progress,
+              });
+            }
+          },
+          onLeaveBack: () => {
+            // Reset to visible when scrolling back up
+            gsap.set(inner, { opacity: 1, y: 0 });
           },
         });
 

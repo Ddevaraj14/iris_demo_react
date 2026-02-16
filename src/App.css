@@ -15,9 +15,9 @@
   padding: 0;
 }
 
-html {
+/* html {
   scroll-behavior: auto;
-}
+} */
 
 body {
   font-family: "Space Grotesk", "Montserrat", "Helvetica Neue", sans-serif;
@@ -142,6 +142,25 @@ body {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.subsection__content {
+  flex: 1;
+}
+
+.subsection__image {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.subsection__image img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .subsection h3 {

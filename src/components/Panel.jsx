@@ -24,7 +24,19 @@ const Panel = forwardRef(function Panel(
 
   // Text fly-in animation when panel becomes active
   useEffect(() => {
-    if (!isActive || hasAnimatedRef.current) return;
+    if (!isActive) {
+      // Reset to visible state when not active (for scroll back)
+      if (titleRef.current) {
+        gsap.set(titleRef.current, { x: 0, opacity: 1, scale: 1 });
+      }
+      if (subtitleRef.current) {
+        gsap.set(subtitleRef.current, { x: 0, opacity: 1 });
+      }
+      hasAnimatedRef.current = false;
+      return;
+    }
+    
+    if (hasAnimatedRef.current) return;
     
     hasAnimatedRef.current = true;
     const tl = gsap.timeline();
@@ -51,13 +63,6 @@ const Panel = forwardRef(function Panel(
     return () => tl.kill();
   }, [isActive]);
 
-  // Reset animation state when leaving the panel
-  useEffect(() => {
-    if (!isActive) {
-      hasAnimatedRef.current = false;
-    }
-  }, [isActive]);
-
   useGSAP(
     () => {
       if (!section.animatedSubsections) return;
@@ -68,6 +73,21 @@ const Panel = forwardRef(function Panel(
     },
     { dependencies: [section.animatedSubsections] }
   );
+
+  // Reset subsections when section becomes active
+  useEffect(() => {
+    if (!section.animatedSubsections) return;
+    
+    const subs = subsectionRefs.current.filter(Boolean);
+    if (!subs.length) return;
+    
+    if (isActive) {
+      // Reset all subsections when entering the section
+      gsap.set(subs, { opacity: 0, y: 12 });
+      gsap.set(subs[0], { opacity: 1, y: 0 });
+      activeSubRef.current = 0;
+    }
+  }, [isActive, section.animatedSubsections]);
 
   useEffect(() => {
     if (!section.animatedSubsections || !isActive || !isPlaying || !audioDuration) return;
@@ -123,12 +143,22 @@ const Panel = forwardRef(function Panel(
         >
           {section.subsections.map((sub, i) => (
             <div
-              key={i}
-              className="subsection"
+              key={sub.id || i}
+              id={sub.id}
+              className={`subsection subsection--${sub.id || i}`}
+              data-subsection-id={sub.id}
+              data-subsection-index={i}
               ref={(el) => (subsectionRefs.current[i] = el)}
             >
-              <h3>{sub.title}</h3>
-              <p>{sub.desc}</p>
+              <div className="subsection__content">
+                <h3>{sub.title}</h3>
+                <p>{sub.desc}</p>
+              </div>
+              {sub.image && (
+                <div className="subsection__image">
+                  <img src={sub.image} alt={sub.title} />
+                </div>
+              )}
             </div>
           ))}
         </div>
